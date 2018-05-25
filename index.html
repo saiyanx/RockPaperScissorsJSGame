@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Rock Paper Scissors Game</title>
+  <style>
+    body{
+      margin-top:250px;
+      text-align: center;
+    }
+
+   </style> 
+</head>
+<body>
+  <h1>ROCK | PAPER | SCISSORS</h1>
+  <h2>Shall we play? Score the most out of 5 rounds to win the game</h2>
+  <div id="round">Round: 1</div>
+  <br>
+  <button id="rock">Rock</button>
+  <button id="paper">Paper</button>
+  <button id="scissors">Scissors</button>
+  <br>
+  <div id="main"></div>
+
+  <script>
+
+      function randomIntFromInterval(min,max)
+      {
+      return Math.floor(Math.random()*(max-min+1)+min);
+      }
+  
+      function computerPlay() {
+        var choices=["Rock", "paper", "ScissoRs"];
+        return choices[randomIntFromInterval(0,2)];
+      }
+  
+  
+      var score=[0,0]; //[0]->Player,[1]->Computer
+      function playRound(playerSelection, COMPUTERSELECTION ){
+        if (playerSelection==="rock" && COMPUTERSELECTION==="paper")
+          { 
+            score[1]=score[1]+1;
+            return "You Lose! Paper beats Rock";
+          }
+        else if (playerSelection==="rock" && COMPUTERSELECTION==="scissors")
+         { 
+           score[0]=score[0]+1;
+           return "You Win! Rock beats Scissors";
+         }
+        else if (playerSelection==="scissors" && COMPUTERSELECTION==="paper")
+        { 
+          score[0]=score[0]+1;
+          return "You Win! Scissors beats Paper";
+        }
+        else if (playerSelection==="paper" && COMPUTERSELECTION==="scissors")
+        { 
+          score[1]=score[1]+1;
+          return "You Lose! Scissors beats Paper";
+        }
+        else if (playerSelection==="paper" && COMPUTERSELECTION==="rock")
+        { 
+          score[0]=score[0]+1;
+          return "You Win! Paper beats Rock";
+        }
+        else if (playerSelection==="scissors" && COMPUTERSELECTION==="rock")
+        { 
+          score[1]=score[1]+1;
+          return "You Lose! Rock beats Scissors";
+        }
+        else
+        {return "Draw";}
+      }
+
+      var round=1;
+      var btns = document.querySelectorAll("button");
+      var playerSelection = "";  
+      var btnClicked = false;
+      btns.forEach(btn => btn.addEventListener("click", function(){
+          playerSelection = this.id;
+          btnClicked = true;
+          if(btnClicked)
+             game();
+      } )); 
+
+      function game()
+      {
+              //***Print Round number to screen each time                            
+              //const PLAYERINPUT = prompt("What do you choose from Rock, Paper and Scissors?");
+                    let rDiv = document.querySelector("#round");
+                    let mainDiv = document.querySelector("#main");
+                    let playerElement = document.createElement("p");
+                    let computerElement = document.createElement("p");
+                    let resultElement = document.createElement("p");
+                    let scoreElement = document.createElement("p");
+                    let br = document.createElement("br");
+                    const COMPUTERSELECTION = computerPlay().toLowerCase();
+
+                    rDiv.textContent =  String("Round:"+(round+1));
+                    playerElement.textContent =  String("Your choice:"+playerSelection);  
+                    computerElement.textContent = String("Computer choice:"+COMPUTERSELECTION); 
+                    resultElement.textContent = String(playRound (playerSelection, COMPUTERSELECTION )); 
+                    scoreElement.textContent = "Score: Player vs Computer: "+score[0]+" | "+score[1];
+                    mainDiv.textContent = "";
+                    mainDiv.appendChild(br);
+                    mainDiv.appendChild(playerElement);
+                    mainDiv.appendChild(computerElement);
+                    mainDiv.appendChild(resultElement);
+                    mainDiv.appendChild(scoreElement);
+                    round++;
+                    if (round>=5)
+                    {
+                      if (score[0]>score[1])
+                      {
+                        resultElement.textContent ="Congratulations, YOU WON!!! Click on any button to play again"; 
+                      }
+                      else if (score[0]==score[1])
+                      {
+                        resultElement.textContent = "Congratulations, IT'S A DRAW!!! Click on any button to play again";
+                      }
+                      else
+                      {
+                        resultElement.textContent = "Sorry, You lost, better luck next time!!! Click on any button to play again";
+                      }
+                      mainDiv.textContent = "";
+                      mainDiv.appendChild(resultElement);
+                      mainDiv.appendChild(scoreElement);
+                      if (round>5)
+                      {   
+                        window.location.reload();
+                      }
+                    }
+      }
+    </script>
+</body>
+</html>
